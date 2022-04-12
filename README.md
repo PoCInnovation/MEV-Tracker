@@ -35,7 +35,7 @@ Developers
 | :---: | :---: | :---: |
 
 Manager
-| [<img src="https://github.com/OnsagerHe.png?size=85" width=85><br><sub>[Onsager He]</sub>](https://github.com/adrienfort)
+| [<img src="https://github.com/OnsagerHe.png?size=85" width=85><br><sub>Onsager He</sub>](https://github.com/adrienfort)
 | :---: |
 
 <h2 align=center>
