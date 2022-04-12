@@ -2,7 +2,7 @@
 
 # MEV Tracker
 
-[Project's description]
+A program that analyzes pending transactions on the ethereum blockchain and can tell if they were issued by a bot.
 
 ## How does it work?
 
