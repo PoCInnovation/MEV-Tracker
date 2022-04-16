@@ -31,7 +31,7 @@ If you're interested in how the project is organized at a higher level, please c
 ## Our PoC team :heart:
 
 Developers
-| [<img src="https://github.com/AlexandreCollin.png?size=85" width=85><br><sub>AlexandreCollin</sub>](https://github.com/MrZalTy) | [<img src="https://github.com/MrZalTy.png?size=85" width=85><br><sub>[Developer's name]</sub>](https://github.com/MrZalTy) | [<img src="https://github.com/MrZalTy.png?size=85" width=85><br><sub>[Developer's name]</sub>](https://github.com/MrZalTy)
+| [<img src="https://github.com/AlexandreCollin.png?size=85" width=85><br><sub>Alexandre Collin</sub>](https://github.com/AlexandreCollin) | [<img src="https://github.com/alexandregrare.png?size=85" width=85><br><sub>Alexandre Grare</sub>](https://github.com/alexandregrare) | [<img src="https://github.com/Toumi-Elyes.png?size=85" width=85><br><sub>Elyes Toumi</sub>](https://github.com/Toumi-Elyes)
 | :---: | :---: | :---: |
 
 Manager
