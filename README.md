@@ -1,5 +1,3 @@
-> If you see this section, you've just created a repository using [PoC Innovation's Open-Source project template](https://github.com/PoCInnovation/open-source-project-template). Check the [getting started guide](./.github/getting-started.md).
-
 # MEV Tracker
 
 A program that analyzes pending transactions on the ethereum blockchain and can tell if they were issued by a bot.
@@ -35,7 +33,7 @@ Developers
 | :---: | :---: | :---: |
 
 Manager
-| [<img src="https://github.com/OnsagerHe.png?size=85" width=85><br><sub>Onsager He</sub>](https://github.com/adrienfort)
+| [<img src="https://github.com/OnsagerHe.png?size=85" width=85><br><sub>Onsager He</sub>](https://github.com/OnsagerHe)
 | :---: |
 
 <h2 align=center>
