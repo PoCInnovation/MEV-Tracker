@@ -54,7 +54,7 @@ for line in pytorch_data:
   mev_dataset.append((line, 1))
 
 
-weights = torch.randn(1, 2)
+weights = torch.randn(2, 1, requires_grad=True)
 print(weights)
 
 
@@ -81,20 +81,12 @@ for img_number, (data, target) in enumerate(mev_dataset):
 
     if weights.grad is not None:
         weights.grad.zero_()
-    data = data.view(1, 2)
+    data = data.view((-1, 2))
 
-    print("data = ", data)
-    print("weights = ", weights.view(2, 1))
-    activations = torch.matmul(data, weights.view(2, 1))
-    print('activations =', activations)
+    target = torch.tensor([target])
+    activations = torch.matmul(data, weights)
     log_softmax = F.log_softmax(activations, dim=1)
-    print("log_softmax =", log_softmax[0])
-    print('size = ', log_softmax.size())
-    print('size = ', log_softmax.size())
-    print('target = ', torch.tensor([target]))
-
-    loss = F.nll_loss(log_softmax[0], torch.tensor([target]))
-    print("\r",loss.item(), end=' ')
+    loss = F.nll_loss(log_softmax, target)
 
     loss.backward()
 
