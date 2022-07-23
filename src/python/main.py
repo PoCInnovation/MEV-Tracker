@@ -1,22 +1,38 @@
+from tkinter import Variable
 import numpy as np
 import torch
 import csv
 
 
-
+import torch.optim as optim
 import torch as tor
 import torch.nn as nn
 import torch.nn.functional as F
+
+
 class model(nn.Module):
-    def __init__(self):
-      super(model, self).__init__()
-      self.fc1 = nn.Linear(2, 1)
+    def __init__(self, X):
+        super(model, self).__init__()
+        self.fc1 = nn.Linear(2, 1)
+        self.data = []
+        self.model = torch.nn.Sequential(
+            torch.nn.Linear(2, 1),
+            torch.nn.Flatten(0, 1)
+        )
+        self.Y = torch.sin(X)
+
+
+    def forward(self, X):
+        y_pred = self.model(X)
+        return y_pred
+
 
 test = torch.randn(1, 2)
 
 print(test)
 
-nnmodel = model()
+nnmodel = model(torch.linspace(0, 2038602856570, steps=2))
+optimizer = optim.Adam(nnmodel.parameters(), lr=0.01)
 
 output = nnmodel.fc1(test)
 
@@ -44,9 +60,6 @@ np_data = np.loadtxt("gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1
 print(np_data)
 pytorch_data = torch.from_numpy(np_data)
 print(pytorch_data)
-
-
-
 
 mev_dataset = []
 
@@ -77,21 +90,26 @@ def test(weights, data_test):
 
 
 it = 0
+loss = nn.CrossEntropyLoss()
 for img_number, (data, target) in enumerate(mev_dataset):
 
     if weights.grad is not None:
         weights.grad.zero_()
+        optimizer.zero_grad()
+
     data = data.view((-1, 2))
+    data = nnmodel.forward(data)
 
     target = torch.tensor([target])
-    activations = torch.matmul(data, weights)
-    log_softmax = F.log_softmax(activations, dim=1)
-    loss = F.nll_loss(log_softmax, target)
 
-    loss.backward()
+    # target = torch.empty(1, dtype=torch.long).random_(5)
+    print("target = ", target)
+    # data = data[:-1]
+    print("data = ", data)
+    output = loss(data, torch.tensor(0.2).long())
+    output.backward()
+    optimizer.step()
 
-    with torch.no_grad():
-        weights -= 0.1*weights.grad
     it += 1
 
     # if not it % 100:
