@@ -30,7 +30,7 @@ If you're interested in how the project is organized at a higher level, please c
 
 Developers
 | [<img src="https://github.com/alexandregrare.png?size=85" width=85><br><sub>Alexandre Grare</sub>](https://github.com/alexandregrare) | [<img src="https://github.com/Toumi-Elyes.png?size=85" width=85><br><sub>Elyes Toumi</sub>](https://github.com/Toumi-Elyes)
-| :---: | :---: | :---: |
+| :---: | :---: |
 
 Manager
 | [<img src="https://github.com/OnsagerHe.png?size=85" width=85><br><sub>Onsager He</sub>](https://github.com/OnsagerHe)
