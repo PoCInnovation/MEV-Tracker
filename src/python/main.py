@@ -1,4 +1,3 @@
-from tkinter import Variable
 import numpy as np
 import torch
 import csv
@@ -13,10 +12,10 @@ import torch.nn.functional as F
 class model(nn.Module):
     def __init__(self, X):
         super(model, self).__init__()
-        self.fc1 = nn.Linear(2, 1)
+        self.fc1 = nn.Linear(3, 1)
         self.data = []
         self.model = torch.nn.Sequential(
-            torch.nn.Linear(2, 1),
+            torch.nn.Linear(3, 1),
             torch.nn.Flatten(0, 1)
         )
         self.Y = torch.sin(X)
@@ -27,7 +26,7 @@ class model(nn.Module):
         return y_pred
 
 
-test = torch.randn(1, 2)
+test = torch.randn(1, 3)
 
 print(test)
 
@@ -56,7 +55,7 @@ print(output)
 
 
 
-np_data = np.loadtxt("gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
+np_data = np.loadtxt("new_gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
 print(np_data)
 pytorch_data = torch.from_numpy(np_data)
 print(pytorch_data)
@@ -64,10 +63,10 @@ print(pytorch_data)
 mev_dataset = []
 
 for line in pytorch_data:
-  mev_dataset.append((line, 1))
+    mev_dataset.append(line)
 
 
-weights = torch.randn(2, 1, requires_grad=True)
+weights = torch.randn(3, 1, requires_grad=True)
 print(weights)
 
 
@@ -77,7 +76,7 @@ def test(weights, data_test):
 
     for (data, target) in data_test:
         # print(batch_idx, data.shape, target.shape)
-        data = data.view((1, 2))
+        data = data.view((1, 3))
         # print(batch_idx, data.shape, target.shape)
 
         activations = torch.matmul(data, weights)
@@ -91,16 +90,17 @@ def test(weights, data_test):
 
 it = 0
 loss = nn.CrossEntropyLoss()
-for img_number, (data, target) in enumerate(mev_dataset):
+for data in mev_dataset:
 
     if weights.grad is not None:
         weights.grad.zero_()
         optimizer.zero_grad()
 
-    data = data.view((-1, 2))
+    data = data.view((-1, 3))
+    target = data[0][2]
     data = nnmodel.forward(data)
 
-    target = torch.tensor([target])
+
 
     # target = torch.empty(1, dtype=torch.long).random_(5)
     print("target = ", target)
