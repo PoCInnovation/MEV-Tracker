@@ -56,29 +56,28 @@ print(output)
 
 
 np_data = np.loadtxt("new_gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
-print(np_data)
+np_data_test = np.loadtxt("gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
 pytorch_data = torch.from_numpy(np_data)
-print(pytorch_data)
+pytorch_data_test = torch.from_numpy(np_data_test)
 
 mev_dataset = []
-
 for line in pytorch_data:
     mev_dataset.append(line)
 
+mev_dataset_test = []
+for line in pytorch_data_test:
+    mev_dataset_test.append(line)
 
 weights = torch.randn(3, 1, requires_grad=True)
-print(weights)
+weights_test = torch.randn(2, 1, requires_grad=True)
 
 
 def test(weights, data_test):
-    test_size = len(data_test.dataset)
+    test_size = len(data_test)
     correct = 0
 
-    for (data, target) in data_test:
-        # print(batch_idx, data.shape, target.shape)
-        data = data.view((1, 3))
-        # print(batch_idx, data.shape, target.shape)
-
+    for data in data_test:
+        data = data.view((1, 2))
         activations = torch.matmul(data, weights)
         softmax = F.softmax(activations, dim=1)
         prediction = softmax.argmax(dim=1, keepdim=True)
@@ -99,21 +98,14 @@ for data in mev_dataset:
     data = data.view((-1, 3))
     target = data[0][2]
     data = nnmodel.forward(data)
-
-
-
-    # target = torch.empty(1, dtype=torch.long).random_(5)
-    print("target = ", target)
-    # data = data[:-1]
-    print("data = ", data)
     output = loss(data, torch.tensor(0.2).long())
     output.backward()
     optimizer.step()
 
     it += 1
 
-    # if not it % 100:
-    #     test(weights, test_dataset)
+    if not it % 100:
+        test(weights_test, mev_dataset_test)
 
     if it > 5000:
         break
