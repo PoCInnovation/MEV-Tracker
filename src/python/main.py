@@ -12,7 +12,7 @@ class Model(nn.Module):
         self.fc1 = nn.Linear(3, 1)
         self.data = []
         self.model = torch.nn.Sequential(
-            torch.nn.Linear(3, 2),
+            torch.nn.Linear(3, 1),
             torch.nn.Flatten(0, 1)
         )
 
@@ -86,9 +86,12 @@ for data in mev_dataset:
     ##    optimizer.zero_grad()
 
     data = data.view((-1, 3))
-    target = data[0][2]
+    target = torch.tensor(torch.tensor(data[0][2]))
+    print(f"target: {target}")
+    print(f"target: {type(target)}")
     data = nnmodel.forward(data)
-    output = loss(data, torch.tensor(0.2).long())
+    print(data)
+    output = loss(data, target)
     optimizer.zero_grad()
     output.backward()
     optimizer.step()
