@@ -28,6 +28,11 @@ print(test)
 nnmodel = Model()
 optimizer = optim.Adam(nnmodel.parameters(), lr=0.01)
 
+
+def load_model():
+    nnmodel.load_state_dict(torch.load("model.pth"))
+
+
 output = nnmodel.fc1(test)
 
 print(output)
@@ -59,7 +64,7 @@ for line in pytorch_data_test:
     mev_dataset_test.append(line)
 
 weights = torch.randn(3, 1, requires_grad=True)
-weights_test = torch.randn(2, 1, requires_grad=True)
+weights_test = torch.randn(3, 1, requires_grad=True)
 
 
 def test(weights, data_test):
@@ -67,10 +72,11 @@ def test(weights, data_test):
     correct = 0
 
     for data in data_test:
-        data = data.view((1, 2))
+        data = data.view((-1, 3))
         activations = torch.matmul(data, weights)
         softmax = F.softmax(activations, dim=1)
         prediction = softmax.argmax(dim=1, keepdim=True)
+        print(prediction, data[0][2])
         correct_predictions = prediction.eq(target.view_as(prediction)).sum().item()
         correct += correct_predictions
     accuracy = correct / test_size
@@ -86,11 +92,8 @@ for data in mev_dataset:
     ##    optimizer.zero_grad()
 
     data = data.view((-1, 3))
-    target = torch.tensor(torch.tensor(data[0][2]))
-    print(f"target: {target}")
-    print(f"target: {type(target)}")
+    target = torch.tensor([data[0][2]])
     data = nnmodel.forward(data)
-    print(data)
     output = loss(data, target)
     optimizer.zero_grad()
     output.backward()
@@ -99,7 +102,9 @@ for data in mev_dataset:
     it += 1
 
     if not it % 100:
-        test(weights_test, mev_dataset_test)
+        test(weights_test, mev_dataset)
 
     if it > 5000:
         break
+
+    torch.save(nnmodel.state_dict(), "model.pth")
