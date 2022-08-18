@@ -73,11 +73,10 @@ def test(weights, data_test):
 
     for data in data_test:
         data = data.view((-1, 3))
-        activations = torch.matmul(data, weights)
-        softmax = F.softmax(activations, dim=1)
-        prediction = softmax.argmax(dim=1, keepdim=True)
-        print(prediction, data[0][2])
+        prediction = nnmodel.forward(data)
+        # print(prediction, data[0][2])
         correct_predictions = prediction.eq(target.view_as(prediction)).sum().item()
+        # print()
         correct += correct_predictions
     accuracy = correct / test_size
     print(f"accuracy: on test: {accuracy * 100}%")
