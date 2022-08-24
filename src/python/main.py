@@ -13,7 +13,8 @@ class Model(nn.Module):
         self.data = []
         self.model = torch.nn.Sequential(
             torch.nn.Linear(3, 1),
-            torch.nn.Flatten(0, 1)
+            torch.nn.Flatten(0, 1),
+            torch.nn.Sigmoid()
         )
 
     def forward(self, X):
@@ -94,9 +95,9 @@ for data in mev_dataset:
     target = torch.tensor([data[0][2]])
     data = nnmodel.forward(data)
     output = loss(data, target)
-    optimizer.zero_grad()
     output.backward()
     optimizer.step()
+    optimizer.zero_grad()
 
     it += 1
 
@@ -107,3 +108,7 @@ for data in mev_dataset:
         break
 
     torch.save(nnmodel.state_dict(), "model.pth")
+
+#   ajouter données []
+#   ajouter layers []
+#   ajouter programme avec goeth pour recuperer les blocs de flashbot []
