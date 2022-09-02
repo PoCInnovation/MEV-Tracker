@@ -1,44 +1,42 @@
 import numpy as np
 import torch
-import csv
-
 
 import torch.optim as optim
-import torch as tor
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class model(nn.Module):
-    def __init__(self, X):
-        super(model, self).__init__()
-        self.fc1 = nn.Linear(3, 1)
+class Model(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(4, 1)
         self.data = []
         self.model = torch.nn.Sequential(
-            torch.nn.Linear(3, 1),
-            torch.nn.Flatten(0, 1)
+            torch.nn.Linear(4, 1),
+            torch.nn.Flatten(0, 1),
+            torch.nn.Sigmoid()
         )
-        self.Y = torch.sin(X)
-
 
     def forward(self, X):
         y_pred = self.model(X)
         return y_pred
 
 
-test = torch.randn(1, 3)
+test = torch.randn(1, 4)
 
 print(test)
 
-nnmodel = model(torch.linspace(0, 2038602856570, steps=2))
+nnmodel = Model()
 optimizer = optim.Adam(nnmodel.parameters(), lr=0.01)
+
+
+def load_model():
+    nnmodel.load_state_dict(torch.load("model.pth"))
+
 
 output = nnmodel.fc1(test)
 
 print(output)
-
-
-
 
 # file = open("blocks.json")
 
@@ -53,10 +51,8 @@ print(output)
 #     print(transaction["gas_used"], transaction["gas_price"], sep=",")
 
 
-
-
-np_data = np.loadtxt("new_gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
-np_data_test = np.loadtxt("gas_data.csv", dtype=np.float32, delimiter=",", skiprows=1)
+np_data = np.loadtxt("new_dataset.csv", dtype=np.float32, delimiter=",", skiprows=1)
+np_data_test = np.loadtxt("new_data_not_labelised.csv", dtype=np.float32, delimiter=",", skiprows=1)
 pytorch_data = torch.from_numpy(np_data)
 pytorch_data_test = torch.from_numpy(np_data_test)
 
@@ -68,44 +64,44 @@ mev_dataset_test = []
 for line in pytorch_data_test:
     mev_dataset_test.append(line)
 
-weights = torch.randn(3, 1, requires_grad=True)
-weights_test = torch.randn(2, 1, requires_grad=True)
-
-
-def test(weights, data_test):
+def test(data_test):
     test_size = len(data_test)
     correct = 0
 
     for data in data_test:
-        data = data.view((1, 2))
-        activations = torch.matmul(data, weights)
-        softmax = F.softmax(activations, dim=1)
-        prediction = softmax.argmax(dim=1, keepdim=True)
+        data = data.view((-1, 4))
+        prediction = nnmodel.forward(data)
+        # print(prediction, data[0][2])
         correct_predictions = prediction.eq(target.view_as(prediction)).sum().item()
+        # print()
         correct += correct_predictions
     accuracy = correct / test_size
-    print(f"accuracy: on test: {accuracy*100}%")
+    print(f"accuracy: on test: {accuracy * 100}%")
 
 
 it = 0
-loss = nn.CrossEntropyLoss()
+loss = nn.BCEWithLogitsLoss()
 for data in mev_dataset:
 
-    if weights.grad is not None:
-        weights.grad.zero_()
-        optimizer.zero_grad()
-
-    data = data.view((-1, 3))
-    target = data[0][2]
+    data = data.view((-1, 4))
+    target = torch.tensor([data[0][3]])
     data = nnmodel.forward(data)
-    output = loss(data, torch.tensor(0.2).long())
+    output = loss(data, target)
     output.backward()
     optimizer.step()
+    optimizer.zero_grad()
 
     it += 1
 
     if not it % 100:
-        test(weights_test, mev_dataset_test)
+        test(mev_dataset)
 
-    if it > 5000:
-        break
+    # if it > 5000:
+        # break
+
+    torch.save(nnmodel.state_dict(), "model.pth")
+
+#   ajouter données [X]
+#   ajouter programme avec goeth pour recuperer les blocs de flashbot [X]
+
+#   ajouter layers []
