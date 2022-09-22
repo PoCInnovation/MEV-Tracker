@@ -1,24 +1,26 @@
-# MEV Tracker
+# MEV-Tracker
 
 A program that analyzes pending transactions on the ethereum blockchain and can tell if they were issued by a bot.
 
 ## How does it work?
 
-[Explain how this project is working]
+MEV-Tracker is based on an artificial intelligence model that has been trained to detect 
 
 ## Getting Started
 
 ### Installation
 
-[Explain how to install all of the project's dependencies]
+### Install Python
+Follow the instructions on the official website [here](https://www.python.org/downloads/)
+
+### Install Golang
+Follow the instructions on the official website [here](https://go.dev/doc/install)
 
 ### Quickstart
 
-[Explain how to run this project]
-
-### Usage
-
-[Explain how to use this project]
+`
+python3 src
+`
 
 ## Get involved
 
