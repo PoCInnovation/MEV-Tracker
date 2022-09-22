@@ -24,9 +24,9 @@ Follow the instructions on the official website [here](https://pytorch.org/)
 
 ### Quickstart
 
-`
+```sh
 python3 src/python/main.py
-`
+```
 
 ## Get involved
 
